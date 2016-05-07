@@ -4,17 +4,22 @@ var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create
 
 function preload () {
   game.load.image('earth', 'assets/light_sand.png')
+  game.load.image('castle', 'assets/Castle.png');
   game.load.spritesheet('dude', 'assets/dude.png', 64, 64)
   game.load.spritesheet('enemy', 'assets/dude.png', 64, 64)
 }
 
 var socket // Socket connection
 
-var land
+var land;
 
-var player
+var player;
 
-var enemies
+var enemies;
+
+var guards;
+
+var castle;
 
 var currentSpeed = 0;
 var cursors;
@@ -35,7 +40,11 @@ function create () {
   player = game.add.sprite(startX, startY, 'dude')
   player.anchor.setTo(0.5, 0.5)
   player.animations.add('move', [0, 1, 2, 3, 4, 5, 6, 7], 20, true)
-  player.animations.add('stop', [3], 20, true)
+  player.animations.add('stop', [3], 20, true);
+
+  castle = game.add.sprite(-500, -500, 'castle');
+  game.physics.enable(castle, Phaser.Physics.ARCADE);
+  castle.body.immovable = true;
 
   // This will force it to decelerate and limit its speed
   // player.body.drag.setTo(200, 200)
@@ -44,7 +53,9 @@ function create () {
   player.body.collideWorldBounds = true
 
   // Create some baddies to waste :)
-  enemies = []
+  enemies = [];
+  guards = [];
+
 
   player.bringToTop()
 
@@ -53,6 +64,8 @@ function create () {
   game.camera.focusOnXY(0, 0)
 
   cursors = game.input.keyboard.createCursorKeys()
+
+  document.querySelector("canvas").style.margin = "auto";
 
   // Start listening for events
   setEventHandlers()
@@ -144,7 +157,6 @@ function update () {
   for (var i = 0; i < enemies.length; i++) {
     if (enemies[i].alive) {
       enemies[i].update()
-      game.physics.arcade.collide(player, enemies[i].player)
     }
   }
 
@@ -170,6 +182,8 @@ function update () {
   } else {
     player.animations.play('stop')
   }
+
+  game.physics.arcade.collide(player, castle, score);
 
   land.tilePosition.x = -game.camera.x
   land.tilePosition.y = -game.camera.y
@@ -198,4 +212,9 @@ function playerById (id) {
   }
 
   return false
+}
+
+function score() {
+  socket.emit("score", 1);
+  console.info("scoring!");
 }

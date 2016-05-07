@@ -1,7 +1,10 @@
 <!doctype html>
 <html lang='en'>
   <head>
-    <meta charset='UTF-8' />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
     <title>Projector View</title>
     <link type='text/css' rel='stylesheet' href='/style/reset.css' />
     <link type='text/css' rel='stylesheet' href='/style/game.css' />
@@ -9,7 +12,10 @@
     <script src='/socket.io/socket.io.js'></script>
   </head>
   <body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js" integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7" crossorigin="anonymous"></script>
     <script src='/js/RemotePlayer.js'></script>
     <script src='/js/projector.js'></script>
+    <progress id="damage" class="progress progress-danger" value="0" max="50000" style="z-index: 10000; position: fixed; bottom: 0; right: 0; left: 0; padding: 0;"></progress>
   </body>
 </html>

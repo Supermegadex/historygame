@@ -6,6 +6,7 @@ function preload () {
   game.load.image('earth', 'assets/light_sand.png')
   game.load.spritesheet('dude', 'assets/dude.png', 64, 64)
   game.load.spritesheet('enemy', 'assets/dude.png', 64, 64)
+  game.load.image('castle', 'assets/Castle.png');
 }
 
 var socket; // Socket connection
@@ -15,6 +16,7 @@ var land;
 var player;
 
 var enemies;
+var castle;
 
 var currentSpeed = 0;
 var cursors;
@@ -28,6 +30,7 @@ function create () {
   // Our tiled scrolling background
   land = game.add.tileSprite(0, 0, 2000, 2000, 'earth')
   land.fixedToCamera = true
+  castle = game.add.sprite(-500, -500, 'castle');
 
   // The base of our player
   /*
@@ -76,6 +79,8 @@ var setEventHandlers = function () {
 
   // Player removed message received
   socket.on('remove player', onRemovePlayer)
+
+  socket.on("proScore", onScore);
 }
 
 // Socket connected
@@ -203,4 +208,8 @@ function playerById (id) {
   }
 
   return false
+}
+
+function onScore(score){
+  $("#damage")[0].value = score;
 }
