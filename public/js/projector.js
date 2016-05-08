@@ -7,6 +7,7 @@ function preload () {
   game.load.spritesheet('dude', 'assets/dude.png', 64, 64)
   game.load.spritesheet('enemy', 'assets/dude.png', 64, 64)
   game.load.image('castle', 'assets/Castle.png');
+  game.load.spritesheet('guard', 'assets/Guards.png', 27, 16, 3)
 }
 
 var socket; // Socket connection
@@ -114,7 +115,7 @@ function onNewPlayer (data) {
   }
 
   // Add new player to the remote players array
-  enemies.push(new RemotePlayer(data.id, game, player, data.x, data.y))
+  enemies.push(new RemotePlayer(data.id, game, player, data.x, data.y, data.pType))
 }
 
 // Move player

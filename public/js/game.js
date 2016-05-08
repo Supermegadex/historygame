@@ -28,6 +28,8 @@ var pTY = function(){
   }
 }();
 
+var id = chance.integer();
+
 var guards;
 
 var castle;
@@ -92,24 +94,31 @@ function create () {
   cursors = game.input.keyboard.createCursorKeys();
 
   // Start listening for events
+  console.log(player);
   setEventHandlers()
 }
 
 var setEventHandlers = function () {
   // Socket connection successful
-  socket.on('connect', onSocketConnected)
+  socket.on('connect', onSocketConnected);
 
   // Socket disconnection
-  socket.on('disconnect', onSocketDisconnect)
+  socket.on('disconnect', onSocketDisconnect);
 
   // New player message received
-  socket.on('new player', onNewPlayer)
+  socket.on('new player', onNewPlayer);
 
   // Player move message received
-  socket.on('move player', onMovePlayer)
+  socket.on('move player', onMovePlayer);
 
   // Player removed message received
-  socket.on('remove player', onRemovePlayer)
+  socket.on('remove player', onRemovePlayer);
+
+  socket.on("damage", function(id1){
+    if(id1 == id){
+      damage();
+    }
+  });
 }
 
 // Socket connected
@@ -123,7 +132,7 @@ function onSocketConnected () {
   enemies = []
 
   // Send local player data to the game server
-  socket.emit('new player', { x: player.x, y: player.y, pType: player.pType })
+  socket.emit('new player', { x: player.x, y: player.y, pType: player.pType, hostid: id })
 }
 
 // Socket disconnected
@@ -141,9 +150,9 @@ function onNewPlayer (data) {
     console.log('Duplicate player!')
     return
   }
-
+  console.log(data);
   // Add new player to the remote players array
-  enemies.push(new RemotePlayer(data.id, game, player, data.x, data.y, data.pType))
+  enemies.push(new RemotePlayer(data.id, game, player, data.x, data.y, data.pType, data.hostid))
 }
 
 // Move player
@@ -183,6 +192,12 @@ function update () {
       enemies[i].update();
       if(player.pType == "stormer" && enemies[i].player.pType == "guard"){
         game.physics.arcade.collide(player, enemies[i].player, damage);
+      }
+      else/*(player.pType == "guard" && enemies[i].player.pType == "stormer")*/{
+        game.physics.arcade.collide(player, enemies[i].player, function(){
+          console.log("hey" + enemies[i].player.hostid);
+          socket.emit("attack", enemies[i].player.hostid);
+        });
       }
     }
   }
@@ -241,7 +256,7 @@ function playerById (id) {
   return false
 }
 
-var health = 300;
+var health = 250;
 
 function damage(){
   health--;

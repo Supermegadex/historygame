@@ -1,6 +1,6 @@
 /* global game */
 
-var RemotePlayer = function (index, game, player, startX, startY, pType1) {
+var RemotePlayer = function (index, game, player, startX, startY, pType1, hostid) {
   var x = startX
   var y = startY
 
@@ -35,6 +35,8 @@ var RemotePlayer = function (index, game, player, startX, startY, pType1) {
   this.player.body.collideWorldBounds = true
 
   this.player.angle = game.rnd.angle()
+  this.player.hostid = hostid;
+  console.log(this.player.hostid);
 
   this.lastPosition = { x: x, y: y }
 }
