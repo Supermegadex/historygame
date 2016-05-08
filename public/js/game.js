@@ -7,6 +7,7 @@ function preload () {
   game.load.image('castle', 'assets/Castle.png');
   game.load.spritesheet('dude', 'assets/dude.png', 64, 64)
   game.load.spritesheet('enemy', 'assets/dude.png', 64, 64)
+  game.load.spritesheet('guard', 'assets/Guards.png', 27, 16, 3)
 }
 
 var socket // Socket connection
@@ -16,6 +17,16 @@ var land;
 var player;
 
 var enemies;
+
+var pTY = function(){
+  var c = chance.integer({min: 1, max: 10});
+  if(c >= 9){
+    return("guard");
+  }
+  else{
+    return("stormer");
+  }
+}();
 
 var guards;
 
@@ -37,10 +48,27 @@ function create () {
   // The base of our player
   var startX = Math.round(Math.random() * (1000) - 500)
   var startY = Math.round(Math.random() * (1000) - 500)
-  player = game.add.sprite(startX, startY, 'dude')
+
+  if(pTY == "stormer"){
+    player = game.add.sprite(startX, startY, 'dude')
+    player.animations.add('move', [0, 1, 2, 3, 4, 5, 6, 7], 20, true)
+    player.animations.add('stop', [3], 20, true);
+    player.pType = "stormer";
+  }
+  else if(pTY == "guard"){
+    player = game.add.sprite(startX, startY, 'guard');
+    player.animations.add('move', [0, 1, 2], 20, true);
+    player.animations.add('stop', [1], 20, true);
+    player.pType = "guard";
+  }
+  else{
+    player = game.add.sprite(startX, startY, 'dude')
+    player.animations.add('move', [0, 1, 2, 3, 4, 5, 6, 7], 20, true)
+    player.animations.add('stop', [3], 20, true);
+    console.warn("Something didn't work");
+  }
+
   player.anchor.setTo(0.5, 0.5)
-  player.animations.add('move', [0, 1, 2, 3, 4, 5, 6, 7], 20, true)
-  player.animations.add('stop', [3], 20, true);
 
   castle = game.add.sprite(-500, -500, 'castle');
   game.physics.enable(castle, Phaser.Physics.ARCADE);
@@ -54,8 +82,6 @@ function create () {
 
   // Create some baddies to waste :)
   enemies = [];
-  guards = [];
-
 
   player.bringToTop()
 
@@ -63,9 +89,7 @@ function create () {
   game.camera.deadzone = new Phaser.Rectangle(150, 150, 500, 300)
   game.camera.focusOnXY(0, 0)
 
-  cursors = game.input.keyboard.createCursorKeys()
-
-  document.querySelector("canvas").style.margin = "auto";
+  cursors = game.input.keyboard.createCursorKeys();
 
   // Start listening for events
   setEventHandlers()
@@ -99,7 +123,7 @@ function onSocketConnected () {
   enemies = []
 
   // Send local player data to the game server
-  socket.emit('new player', { x: player.x, y: player.y })
+  socket.emit('new player', { x: player.x, y: player.y, pType: player.pType })
 }
 
 // Socket disconnected
@@ -119,7 +143,7 @@ function onNewPlayer (data) {
   }
 
   // Add new player to the remote players array
-  enemies.push(new RemotePlayer(data.id, game, player, data.x, data.y))
+  enemies.push(new RemotePlayer(data.id, game, player, data.x, data.y, data.pType))
 }
 
 // Move player
@@ -156,7 +180,10 @@ function onRemovePlayer (data) {
 function update () {
   for (var i = 0; i < enemies.length; i++) {
     if (enemies[i].alive) {
-      enemies[i].update()
+      enemies[i].update();
+      if(player.pType == "stormer" && enemies[i].player.pType == "guard"){
+        game.physics.arcade.collide(player, enemies[i].player, damage);
+      }
     }
   }
 
@@ -214,7 +241,24 @@ function playerById (id) {
   return false
 }
 
+var health = 300;
+
+function damage(){
+  health--;
+  if(health <= 0){
+    health = 300;
+    player.x = 750;
+    player.y = 750;
+  }
+}
+
 function score() {
-  socket.emit("score", 1);
-  console.info("scoring!");
+  if(player.pType == "stormer"){
+    socket.emit("score", 3);
+    console.info("scoring!");
+  }
+  if(player.pType == "guard"){
+    socket.emit("score", -1);
+    console.info("fixing!");
+  }
 }
