@@ -37,6 +37,10 @@ var castle;
 var currentSpeed = 0;
 var cursors;
 
+$(function(){
+  $("canvas")[0].style.left = ($(window).width() / 2) - 400;
+});
+
 function create () {
   socket = io.connect()
 
@@ -71,7 +75,6 @@ function create () {
   game.physics.enable(castle, Phaser.Physics.ARCADE);
   castle.body.immovable = true;
   castle.scale.set(1, 1);
-  player.scale.set(2, 2);
 
   // This will force it to decelerate and limit its speed
   // player.body.drag.setTo(200, 200)
@@ -253,15 +256,16 @@ function playerById (id) {
   return false
 }
 
-var health = 250;
+var health = 200;
 
 function damage(){
   health--;
   if(health <= 0){
-    health = 300;
+    health = 200;
     player.x = 750;
     player.y = 750;
   }
+  $("#damage")[0].value = health;
 }
 
 function score() {
