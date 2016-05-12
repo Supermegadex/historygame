@@ -11,21 +11,18 @@ var RemotePlayer = function (index, game, player, startX, startY, pType1, hostid
 
   if(pType1 == "stormer"){
     this.player = game.add.sprite(x, y, 'enemy')
-    this.player.animations.add('move', [0, 1, 2, 3, 4, 5, 6, 7], 20, true)
-    this.player.animations.add('stop', [3], 20, true)
+    this.player.pType = "stormer";
   }
   else if(pType1 == "guard"){
     this.player = game.add.sprite(startX, startY, 'guard');
-    this.player.animations.add('move', [0, 1, 2], 20, true);
-    this.player.animations.add('stop', [1], 20, true);
     this.player.pType = "guard";
   }
   else{
     this.player = game.add.sprite(startX, startY, 'dude')
-    this.player.animations.add('move', [0, 1, 2, 3, 4, 5, 6, 7], 20, true)
-    this.player.animations.add('stop', [3], 20, true);
     console.warn("Something didn't work");
   }
+  this.player.animations.add('move', [0, 1, 2], 20, true);
+  this.player.animations.add('stop', [1], 20, true);
 
   this.player.anchor.setTo(0.5, 0.5)
 

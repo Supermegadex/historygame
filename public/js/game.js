@@ -5,8 +5,8 @@ var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create
 function preload () {
   game.load.image('earth', 'assets/light_sand.png')
   game.load.image('castle', 'assets/Castle.png');
-  game.load.spritesheet('dude', 'assets/dude.png', 64, 64)
-  game.load.spritesheet('enemy', 'assets/dude.png', 64, 64)
+  game.load.spritesheet('dude', 'assets/dude.png', 24, 16, 3)
+  game.load.spritesheet('enemy', 'assets/dude.png', 24, 16, 3)
   game.load.spritesheet('guard', 'assets/Guards.png', 27, 16, 3)
 }
 
@@ -53,28 +53,25 @@ function create () {
 
   if(pTY == "stormer"){
     player = game.add.sprite(startX, startY, 'dude')
-    player.animations.add('move', [0, 1, 2, 3, 4, 5, 6, 7], 20, true)
-    player.animations.add('stop', [3], 20, true);
     player.pType = "stormer";
   }
   else if(pTY == "guard"){
     player = game.add.sprite(startX, startY, 'guard');
-    player.animations.add('move', [0, 1, 2], 20, true);
-    player.animations.add('stop', [1], 20, true);
     player.pType = "guard";
   }
   else{
     player = game.add.sprite(startX, startY, 'dude')
-    player.animations.add('move', [0, 1, 2, 3, 4, 5, 6, 7], 20, true)
-    player.animations.add('stop', [3], 20, true);
-    console.warn("Something didn't work");
   }
+  player.animations.add('move', [0, 1, 2], 20, true);
+  player.animations.add('stop', [1], 20, true);
 
   player.anchor.setTo(0.5, 0.5)
 
   castle = game.add.sprite(-500, -500, 'castle');
   game.physics.enable(castle, Phaser.Physics.ARCADE);
   castle.body.immovable = true;
+  castle.scale.set(1, 1);
+  player.scale.set(2, 2);
 
   // This will force it to decelerate and limit its speed
   // player.body.drag.setTo(200, 200)

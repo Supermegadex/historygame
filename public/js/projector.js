@@ -4,8 +4,8 @@ var game = new Phaser.Game(2000, 2000, Phaser.AUTO, '', { preload: preload, crea
 
 function preload () {
   game.load.image('earth', 'assets/light_sand.png')
-  game.load.spritesheet('dude', 'assets/dude.png', 64, 64)
-  game.load.spritesheet('enemy', 'assets/dude.png', 64, 64)
+  game.load.spritesheet('dude', 'assets/dude.png', 27, 16, 3)
+  game.load.spritesheet('enemy', 'assets/dude2.png', 27, 16, 3)
   game.load.image('castle', 'assets/Castle.png');
   game.load.spritesheet('guard', 'assets/Guards.png', 27, 16, 3)
 }
@@ -32,6 +32,7 @@ function create () {
   land = game.add.tileSprite(0, 0, 2000, 2000, 'earth')
   land.fixedToCamera = true
   castle = game.add.sprite(-500, -500, 'castle');
+  castle.scale.set(1, 1);
 
   // The base of our player
   /*
