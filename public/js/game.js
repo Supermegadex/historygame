@@ -41,6 +41,11 @@ var winBox;
 
 $(function(){
   document.querySelector("#damage").style.left = String(($(window).width() / 2) - 400) + "px";
+  $("#myModal").modal({
+    backdrop: "static",
+    keyboard: false,
+    show: false,
+  })
 });
 
 function create () {

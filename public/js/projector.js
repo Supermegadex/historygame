@@ -27,6 +27,15 @@ var castle;
 var currentSpeed = 0;
 var cursors;
 
+$(function(){
+  $("#myModal").modal({
+    backdrop: "static",
+    keyboard: false,
+    show: false,
+  })
+  socket.emit("restart", 0);
+});
+
 function create () {
   socket = io.connect()
 
