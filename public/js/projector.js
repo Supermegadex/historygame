@@ -5,7 +5,7 @@ var game = new Phaser.Game(2000, 2000, Phaser.AUTO, '', { preload: preload, crea
 function preload () {
   game.load.image('earth', 'assets/light_sand.png')
   game.load.spritesheet('dude', 'assets/dude.png', 27, 16, 3)
-  game.load.spritesheet('enemy', 'assets/dude2.png', 27, 16, 3)
+  game.load.spritesheet('enemy', 'assets/dude.png', 27, 16, 3)
   game.load.image('castle', 'assets/Castle.png');
   game.load.spritesheet('guard', 'assets/Guards.png', 27, 16, 3)
 }
@@ -83,6 +83,8 @@ var setEventHandlers = function () {
   socket.on('remove player', onRemovePlayer)
 
   socket.on("proScore", onScore);
+
+  socket.on("caw!", win);
 }
 
 // Socket connected

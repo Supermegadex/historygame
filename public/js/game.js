@@ -5,6 +5,7 @@ var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create
 function preload () {
   game.load.image('earth', 'assets/light_sand.png')
   game.load.image('castle', 'assets/Castle.png');
+  game.load.image('dust', 'assets/explosion.png');
   game.load.spritesheet('dude', 'assets/dude.png', 24, 16, 3)
   game.load.spritesheet('enemy', 'assets/dude.png', 24, 16, 3)
   game.load.spritesheet('guard', 'assets/Guards.png', 27, 16, 3)
@@ -36,9 +37,10 @@ var castle;
 
 var currentSpeed = 0;
 var cursors;
+var winBox;
 
 $(function(){
-  $("canvas")[0].style.left = ($(window).width() / 2) - 400;
+  document.querySelector("#damage").style.left = String(($(window).width() / 2) - 400) + "px";
 });
 
 function create () {
@@ -70,6 +72,7 @@ function create () {
   player.animations.add('stop', [1], 20, true);
 
   player.anchor.setTo(0.5, 0.5)
+  dust = game.add.sprite(-10000, -20, "dust");
 
   castle = game.add.sprite(-500, -500, 'castle');
   game.physics.enable(castle, Phaser.Physics.ARCADE);
@@ -81,6 +84,8 @@ function create () {
   game.physics.enable(player, Phaser.Physics.ARCADE);
   player.body.maxVelocity.setTo(400, 400)
   player.body.collideWorldBounds = true
+
+  winBox = new Phaser.Rectangle(0, 0, 500, 500);
 
   // Create some baddies to waste :)
   enemies = [];
@@ -113,6 +118,8 @@ var setEventHandlers = function () {
 
   // Player removed message received
   socket.on('remove player', onRemovePlayer);
+
+  socket.on("caw!", win);
 
   socket.on("damage", function(id1){
     if(id1 == id){
@@ -225,8 +232,6 @@ function update () {
     player.animations.play('stop')
   }
 
-  game.physics.arcade.collide(player, castle, score);
-
   land.tilePosition.x = -game.camera.x
   land.tilePosition.y = -game.camera.y
 
@@ -237,7 +242,25 @@ function update () {
       player.rotation = game.physics.arcade.angleToPointer(player)
     }
   }
-
+  if(hasWon){
+    if(winBox.height >= 0){
+      if(castle.x == -500){
+        castle.x = -498;
+      }
+      else{
+        castle.x = -500;
+      }
+      castle.crop(winBox);
+      castle.y++;
+      winBox.height--;
+      dust.x = -600;
+      dust.bringToTop();
+    }
+    dust.x = -10000;
+  }
+  else{
+    game.physics.arcade.collide(player, castle, score);
+  }
   socket.emit('move player', { x: player.x, y: player.y })
 }
 
@@ -277,4 +300,12 @@ function score() {
     socket.emit("score", -1);
     console.info("fixing!");
   }
+}
+
+var hasWon = false;
+var dust;
+
+function win(){
+  hasWon = true;
+  console.log("wOA!");
 }
