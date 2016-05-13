@@ -251,6 +251,7 @@ function onScore(score, win){
   $("#damage")[0].value = score;
   if(score >= win){
     hasWon = true;
+    $("#myModal").modal("show");
   }
 }
 
@@ -259,4 +260,5 @@ var hasWon = false;
 function win(){
   console.log("caw!")
   hasWon = true;
+  $("#myModal").modal("show");
 }

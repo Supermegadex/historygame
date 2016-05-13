@@ -324,6 +324,7 @@ var dust;
 function win(){
   hasWon = true;
   console.log("caw!");
+  $("#myModal").modal("show");
 }
 
 function ss(score){
@@ -334,5 +335,6 @@ function test(e){
   if(e){
     hasWon = true;
     console.log("got it");
+    $("#myModal").modal("show");
   }
 }

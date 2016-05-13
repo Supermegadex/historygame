@@ -5,16 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>Storming of Bastille</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+    <link rel="stylesheet" href="/bootstrap/dist/css/bootstrap.min.css">
     <link type='text/css' rel='stylesheet' href='/style/reset.css' />
     <link type='text/css' rel='stylesheet' href='/style/game.css' />
     <script src='/js/vendor/phaser.min.js'></script>
     <script src='/socket.io/socket.io.js'></script>
   </head>
   <body>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <14 class="modal-title" id="myModalLabel">You won!</h1>
+          </div>
+          <div class="modal-body">
+            And your fantastic prize is... more information!
+          </div>
+        </div>
+      </div>
+    </div>
     <progress id="damage" class="progress progress-danger" value="200" max="200" style="z-index: 10000; width: 800px; position: fixed; top: 600px;"></progress>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js" integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7" crossorigin="anonymous"></script>
+    <script src="/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="/js/chance.min.js"></script>
     <script src='/js/RemotePlayer.js'></script>
     <script src='/js/game.js'></script>
