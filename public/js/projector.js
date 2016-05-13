@@ -247,8 +247,11 @@ function playerById (id) {
   return false
 }
 
-function onScore(score){
+function onScore(score, win){
   $("#damage")[0].value = score;
+  if(score >= win){
+    hasWon = true;
+  }
 }
 
 var hasWon = false;
