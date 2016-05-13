@@ -33,7 +33,6 @@ $(function(){
     keyboard: false,
     show: false,
   })
-  socket.emit("restart", 0);
 });
 
 function create () {
@@ -105,7 +104,10 @@ var setEventHandlers = function () {
 
   test = window.setInterval(function(){
     socket.emit("test", 1);
-  }, 1000)
+  }, 1000);
+
+  console.log("hai");
+  socket.emit("restart", 0);
 }
 
 // Socket connected
