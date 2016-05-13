@@ -8,6 +8,16 @@ canvas {
   margin: auto;
 }
 
+/*
 #myModal {
   background-color: #000;
+}
+*/
+
+html {
+  font-family: Verdana, Geneva, sans-serif
+}
+
+h1 {
+  font-size: 22px;
 }
