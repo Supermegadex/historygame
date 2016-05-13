@@ -7,12 +7,17 @@ function preload () {
   game.load.spritesheet('dude', 'assets/dude.png', 27, 16, 3)
   game.load.spritesheet('enemy', 'assets/dude.png', 27, 16, 3)
   game.load.image('castle', 'assets/Castle.png');
+  game.load.image('dust', 'assets/explosion.png');
   game.load.spritesheet('guard', 'assets/Guards.png', 27, 16, 3)
 }
 
 var socket; // Socket connection
 
 var land;
+
+var test;
+
+var winBox;
 
 var player;
 
@@ -33,6 +38,9 @@ function create () {
   land.fixedToCamera = true
   castle = game.add.sprite(-500, -500, 'castle');
   castle.scale.set(1, 1);
+
+  dust = game.add.sprite(-10000, -20, "dust");
+  winBox = new Phaser.Rectangle(0, 0, 500, 500);
 
   // The base of our player
   /*
@@ -85,6 +93,10 @@ var setEventHandlers = function () {
   socket.on("proScore", onScore);
 
   socket.on("caw!", win);
+
+  test = window.setInterval(function(){
+    socket.emit("test", 1);
+  }, 1000)
 }
 
 // Socket connected
@@ -159,6 +171,25 @@ function update () {
       game.physics.arcade.collide(player, enemies[i].player)
     }
   }
+  if(hasWon){
+    if(winBox.height >= 0){
+      if(castle.x == -500){
+        castle.x = -498;
+      }
+      else{
+        castle.x = -500;
+      }
+      castle.crop(winBox);
+      castle.y++;
+      winBox.height--;
+      dust.x = -550;
+      dust.bringToTop();
+    }
+    else{
+      dust.x = -10000;
+      hasWon = false;
+    }
+  }
 /*
   if (cursors.left.isDown) {
     player.angle -= 4
@@ -183,6 +214,8 @@ function update () {
   } else {
     player.animations.play('stop')
   }
+
+  Hello, fuckers of HWH Block 4!
 
   land.tilePosition.x = -game.camera.x
   land.tilePosition.y = -game.camera.y
@@ -216,4 +249,11 @@ function playerById (id) {
 
 function onScore(score){
   $("#damage")[0].value = score;
+}
+
+var hasWon = false;
+
+function win(){
+  console.log("caw!")
+  hasWon = true;
 }

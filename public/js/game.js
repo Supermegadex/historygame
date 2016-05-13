@@ -110,16 +110,22 @@ var setEventHandlers = function () {
   // Socket disconnection
   socket.on('disconnect', onSocketDisconnect);
 
+  // WINNING!
+  socket.on("caw!", win);
+
+  socket.on("tst", test);
+
   // New player message received
   socket.on('new player', onNewPlayer);
+
+  // score
+  socket.on("proScore", ss);
 
   // Player move message received
   socket.on('move player', onMovePlayer);
 
   // Player removed message received
   socket.on('remove player', onRemovePlayer);
-
-  socket.on("caw!", win);
 
   socket.on("damage", function(id1){
     if(id1 == id){
@@ -253,10 +259,12 @@ function update () {
       castle.crop(winBox);
       castle.y++;
       winBox.height--;
-      dust.x = -600;
+      dust.x = -550;
       dust.bringToTop();
     }
-    dust.x = -10000;
+    else{
+      dust.x = -10000;
+    }
   }
   else{
     game.physics.arcade.collide(player, castle, score);
@@ -293,19 +301,38 @@ function damage(){
 
 function score() {
   if(player.pType == "stormer"){
-    socket.emit("score", 3);
+    s += 3;
     console.info("scoring!");
   }
   if(player.pType == "guard"){
-    socket.emit("score", -1);
+    s--;
     console.info("fixing!");
   }
 }
+
+var s = 0;
+
+var i = window.setInterval(function(){
+  socket.emit("score", s);
+  console.info("sending!");
+  s = 0;
+}, 1000)
 
 var hasWon = false;
 var dust;
 
 function win(){
   hasWon = true;
-  console.log("wOA!");
+  console.log("caw!");
+}
+
+function ss(score){
+  console.log(score);
+}
+
+function test(e){
+  if(e){
+    hasWon = true;
+    console.log("got it");
+  }
 }
