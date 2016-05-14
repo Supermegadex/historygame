@@ -16,10 +16,30 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
             <h1 class="modal-title" id="myModalLabel">You won!</h1>
           </div>
           <div class="modal-body">
             The Bastille was destroyed!
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title" id="createTitle">Some background on the Bastille:</h1>
+          </div>
+          <div class="modal-body">
+            <ul>
+              <li>The American Revolution caused France to go into debt</li>
+              <li>The French <b>Third Estate</b> was dissatisfied and their representatives in the government formed the <b>National Guard</b></li>
+              <li>The commoners, in protest, stormed the Bastille, which sparked the <b>French Revolution</b></li>
+            </ul>
+            <button class="btn btn-large btn-lg btn-success" onclick="start();">Start!</button>
           </div>
         </div>
       </div>

@@ -32,8 +32,19 @@ $(function(){
     backdrop: "static",
     keyboard: false,
     show: false,
+  });
+  $("#createModal").modal({
+    backdrop: "static",
+    keyboard: false,
+    show: false,
   })
+  $("#createModal").modal("show");
 });
+
+function start(){
+  $("#createModal").modal("hide");
+  socket.emit("start!");
+}
 
 function create () {
   socket = io.connect()

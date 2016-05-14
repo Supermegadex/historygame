@@ -1,17 +1,17 @@
 /* global Phaser RemotePlayer io */
 
-var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update, render: render })
+var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update, render: render });
 
 function preload () {
   game.load.image('earth', 'assets/light_sand.png')
   game.load.image('castle', 'assets/Castle.png');
   game.load.image('dust', 'assets/explosion.png');
-  game.load.spritesheet('dude', 'assets/dude.png', 24, 16, 3)
-  game.load.spritesheet('enemy', 'assets/dude.png', 24, 16, 3)
-  game.load.spritesheet('guard', 'assets/Guards.png', 27, 16, 3)
+  game.load.spritesheet('dude', 'assets/dude.png', 24, 16, 3);
+  game.load.spritesheet('enemy', 'assets/dude.png', 24, 16, 3);
+  game.load.spritesheet('guard', 'assets/Guards.png', 27, 16, 3);
 }
 
-var socket // Socket connection
+var socket; // Socket connection
 
 var land;
 
@@ -45,7 +45,13 @@ $(function(){
     backdrop: "static",
     keyboard: false,
     show: false,
-  })
+  });
+  $("#createModal").modal({
+    backdrop: "static",
+    keyboard: false,
+    show: false,
+  });
+  $("#createModal").modal("show");
 });
 
 function create () {
@@ -114,6 +120,8 @@ var setEventHandlers = function () {
 
   // Socket disconnection
   socket.on('disconnect', onSocketDisconnect);
+
+  socket.on("start", start);
 
   // WINNING!
   socket.on("caw!", win);
@@ -307,11 +315,9 @@ function damage(){
 function score() {
   if(player.pType == "stormer"){
     s += 3;
-    console.info("scoring!");
   }
   if(player.pType == "guard"){
     s--;
-    console.info("fixing!");
   }
 }
 
@@ -319,7 +325,9 @@ var s = 0;
 
 var i = window.setInterval(function(){
   socket.emit("score", s);
-  console.info("sending!");
+  if(s != 0){
+    console.info("sending " + s);
+  }
   s = 0;
 }, 1000)
 
@@ -342,4 +350,8 @@ function test(e){
     console.log("got it");
     $("#myModal").modal("show");
   }
+}
+
+function start(){
+  $("#createModal").modal("hide");
 }
