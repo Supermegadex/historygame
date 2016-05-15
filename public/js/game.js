@@ -5,6 +5,8 @@ var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create
 function preload () {
   game.load.image('earth', 'assets/light_sand.png')
   game.load.image('castle', 'assets/Castle.png');
+  game.load.image('damage', 'assets/damage.png');
+  game.load.image('heal', 'assets/heal.png');
   game.load.image('dust', 'assets/explosion.png');
   game.load.spritesheet('dude', 'assets/dude.png', 24, 16, 3);
   game.load.spritesheet('enemy', 'assets/dude.png', 24, 16, 3);
@@ -17,15 +19,21 @@ var land;
 
 var player;
 
+var calliope;
+
+var cherub;
+
 var enemies;
 
 var pTY = function(){
   var c = chance.integer({min: 1, max: 10});
   if(c >= 9){
     return("guard");
+    cherub = "heal";
   }
   else{
     return("stormer");
+    cherub = "damage";
   }
 }();
 
@@ -71,10 +79,14 @@ function create () {
   if(pTY == "stormer"){
     player = game.add.sprite(startX, startY, 'dude')
     player.pType = "stormer";
+    spark = game.add.sprite(-10000, -10000, "damage");
+    cherub = "damage";
   }
   else if(pTY == "guard"){
     player = game.add.sprite(startX, startY, 'guard');
     player.pType = "guard";
+    spark = game.add.sprite(-10000, -10000, "heal");
+    cherub = heal;
   }
   else{
     player = game.add.sprite(startX, startY, 'dude')
@@ -108,6 +120,8 @@ function create () {
   game.camera.focusOnXY(0, 0)
 
   cursors = game.input.keyboard.createCursorKeys();
+
+  spark.bringToTop();
 
   // Start listening for events
   console.log(player);
@@ -319,17 +333,36 @@ function score() {
   if(player.pType == "guard"){
     s--;
   }
+  if(player.x > 11){
+    calliope = true;
+  }
+  else{
+    calliope = false;
+  }
 }
 
 var s = 0;
+var spark;
 
 var i = window.setInterval(function(){
-  socket.emit("score", s);
   if(s != 0){
     console.info("sending " + s);
+    if(calliope){
+      spark.x = -10;
+      spark.y = player.y - 5;
+    }
+    else{
+      spark.x = player.x - 5;
+      spark.y = -10;
+    }
+    socket.emit("score", s, spark.x, spark.y, cherub);
+    spark.bringToTop();
+    window.setTimeout(function(){
+      spark.x = -10000;
+    }, 200);
   }
   s = 0;
-}, 1000)
+}, 400)
 
 var hasWon = false;
 var dust;

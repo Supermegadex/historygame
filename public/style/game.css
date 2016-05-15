@@ -12,6 +12,11 @@ canvas {
   background-color: #000;
 }
 
+#createModal .modal-body {
+  padding-left: 20px;
+  padding-bottom: 10px;
+}
+
 html {
   font-family: Verdana, Geneva, sans-serif
 }

@@ -4,9 +4,11 @@ var game = new Phaser.Game(2000, 2000, Phaser.AUTO, '', { preload: preload, crea
 
 function preload () {
   game.load.image('earth', 'assets/light_sand.png')
-  game.load.spritesheet('dude', 'assets/dude.png', 27, 16, 3)
-  game.load.spritesheet('enemy', 'assets/dude.png', 27, 16, 3)
+  game.load.spritesheet('dude', 'assets/dude.png', 24, 16, 3)
+  game.load.spritesheet('enemy', 'assets/dude.png', 24, 16, 3)
   game.load.image('castle', 'assets/Castle.png');
+  game.load.image('damage', 'assets/damage.png');
+  game.load.image('heal', 'assets/heal.png');
   game.load.image('dust', 'assets/explosion.png');
   game.load.spritesheet('guard', 'assets/Guards.png', 27, 16, 3)
 }
@@ -269,8 +271,16 @@ function playerById (id) {
   return false
 }
 
-function onScore(score, win){
+var d = [];
+
+function onScore(score, win, x, y, spr){
   $("#damage")[0].value = score;
+  d.push(game.add.sprite(x, y, spr));
+  window.setTimeout(function(){
+    var k = d.shift();
+    k.kill();
+    console.log("killing!");
+  }, 200);
   if(score >= win){
     hasWon = true;
     $("#myModal").modal("show");
