@@ -19,7 +19,7 @@ var RemotePlayer = function (index, game, player, startX, startY, pType1, hostid
     this.player = game.add.sprite(startX, startY, 'guard');
     this.player.pType = "guard";
     players.es ++;
-    consle.warn("A guard connected!");
+    console.warn("A guard connected!");
   }
   else{
     this.player = game.add.sprite(startX, startY, 'dude')
