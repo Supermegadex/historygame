@@ -13,6 +13,14 @@ function preload () {
   game.load.spritesheet('guard', 'assets/Guards.png', 27, 16, 3)
 }
 
+function bind(obj, property, domElem) {
+  Object.defineProperty(obj, property, {
+    get: function() { return domElem.innerHTML; },
+    set: function(newValue) { domElem.innerHTML = newValue; },
+    configurable: true
+  });
+}
+
 var socket; // Socket connection
 
 var land;
@@ -29,6 +37,11 @@ var castle;
 var currentSpeed = 0;
 var cursors;
 
+var players = {
+  en: 0,
+  st: 0,
+};
+
 $(function(){
   $("#myModal").modal({
     backdrop: "static",
@@ -41,6 +54,8 @@ $(function(){
     show: false,
   })
   $("#createModal").modal("show");
+  bind(players, "en", document.querySelector(".en"));
+  bind(players, "st", document.querySelector(".st"));
 });
 
 function start(){
@@ -174,15 +189,20 @@ function onMovePlayer (data) {
 
 // Remove player
 function onRemovePlayer (data) {
-  var removePlayer = playerById(data.id)
+  var removePlayer = playerById(data.id);
 
   // Player not found
   if (!removePlayer) {
     console.log('Player not found: ', data.id)
     return
   }
-
-  removePlayer.player.kill()
+  if(removePlayer.player.pType == "guard"){
+    players.en --;
+  }
+  else{
+    players.st --;
+  }
+  removePlayer.player.kill();
 
   // Remove player from array
   enemies.splice(enemies.indexOf(removePlayer), 1)

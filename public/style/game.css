@@ -8,6 +8,10 @@ canvas {
   margin: auto;
 }
 
+b {
+  font-weight: 700 !important;
+}
+
 #createModal {
   background-color: #000;
 }
@@ -15,6 +19,7 @@ canvas {
 #createModal .modal-body {
   padding-left: 20px;
   padding-bottom: 10px;
+  line-height: 1.4;
 }
 
 html {

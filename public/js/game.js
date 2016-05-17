@@ -25,6 +25,11 @@ var cherub;
 
 var enemies;
 
+var players = {
+  en: 0,
+  st: 0,
+}
+
 var pTY = function(){
   var c = chance.integer({min: 1, max: 10});
   if(c >= 9){

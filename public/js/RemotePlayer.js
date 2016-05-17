@@ -12,10 +12,12 @@ var RemotePlayer = function (index, game, player, startX, startY, pType1, hostid
   if(pType1 == "stormer"){
     this.player = game.add.sprite(x, y, 'enemy')
     this.player.pType = "stormer";
+    players.st ++;
   }
   else if(pType1 == "guard"){
     this.player = game.add.sprite(startX, startY, 'guard');
     this.player.pType = "guard";
+    players.es ++;
   }
   else{
     this.player = game.add.sprite(startX, startY, 'dude')
