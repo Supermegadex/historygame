@@ -13,11 +13,13 @@ var RemotePlayer = function (index, game, player, startX, startY, pType1, hostid
     this.player = game.add.sprite(x, y, 'enemy')
     this.player.pType = "stormer";
     players.st ++;
+    console.warn("A stormer connected!");
   }
   else if(pType1 == "guard"){
     this.player = game.add.sprite(startX, startY, 'guard');
     this.player.pType = "guard";
     players.es ++;
+    consle.warn("A guard connected!");
   }
   else{
     this.player = game.add.sprite(startX, startY, 'dude')

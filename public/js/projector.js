@@ -154,17 +154,17 @@ function onSocketConnected () {
 
 // Socket disconnected
 function onSocketDisconnect () {
-  console.log('Disconnected from socket server')
+  console.info('Disconnected from socket server')
 }
 
 // New player
 function onNewPlayer (data) {
-  console.log('New player connected:', data.id)
+  console.info('New player connected:', data.id)
 
   // Avoid possible duplicate players
   var duplicate = playerById(data.id)
   if (duplicate) {
-    console.log('Duplicate player!')
+    console.info('Duplicate player!')
     return
   }
 
