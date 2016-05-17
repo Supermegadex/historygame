@@ -86,7 +86,7 @@ function create () {
     player = game.add.sprite(startX, startY, 'guard');
     player.pType = "guard";
     spark = game.add.sprite(-10000, -10000, "heal");
-    cherub = heal;
+    cherub = "heal";
   }
   else{
     player = game.add.sprite(startX, startY, 'dude')
