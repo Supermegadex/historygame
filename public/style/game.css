@@ -19,7 +19,13 @@ b {
 #createModal .modal-body {
   padding-left: 20px;
   padding-bottom: 10px;
-  line-height: 1.4;
+  line-height: 1.4 !important;
+}
+
+#myModal .modal-body {
+  padding-left: 20px;
+  padding-bottom: 10px;
+  line-height: 1.4 !important;
 }
 
 html {

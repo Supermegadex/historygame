@@ -42,6 +42,15 @@ var pTY = function(){
   }
 }();
 
+if(window.location.hash == "guard"){
+  pTY = "guard";
+  cherub = "heal";
+}
+else if(window.location.hash == "stormer"){
+  pTY = "stormer";
+  cherub = "damage";
+}
+
 var id = chance.integer();
 
 var guards;
@@ -374,7 +383,10 @@ var dust;
 
 function win(){
   hasWon = true;
-  console.log("caw!");
+  if(pTY == "guard"){
+    $("#myModalLabel").html("You let the Bastille fall!");
+    $(".modal-body").html("But think of it this way: you let the timeline follow the already-established law of the universe! In other words, you win... in a way!");
+  }
   $("#myModal").modal("show");
 }
 
@@ -384,9 +396,7 @@ function ss(score){
 
 function test(e){
   if(e){
-    hasWon = true;
-    console.log("got it");
-    $("#myModal").modal("show");
+    win();
   }
 }
 
