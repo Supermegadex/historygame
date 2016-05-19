@@ -8,6 +8,8 @@ function preload () {
   game.load.image('damage', 'assets/damage.png');
   game.load.image('heal', 'assets/heal.png');
   game.load.image('dust', 'assets/explosion.png');
+  game.load.image('inst1', 'assets/inst1.png');
+  game.load.image('inst2', 'assets/inst2.png');
   game.load.spritesheet('dude', 'assets/dude.png', 24, 16, 3);
   game.load.spritesheet('enemy', 'assets/dude.png', 24, 16, 3);
   game.load.spritesheet('guard', 'assets/Guards.png', 27, 16, 3);
@@ -56,6 +58,7 @@ var id = chance.integer();
 var guards;
 
 var castle;
+var inst;
 
 var currentSpeed = 0;
 var cursors;
@@ -95,12 +98,14 @@ function create () {
     player.pType = "stormer";
     spark = game.add.sprite(-10000, -10000, "damage");
     cherub = "damage";
+    inst = game.add.sprite(200, 200, "inst1");
   }
   else if(pTY == "guard"){
     player = game.add.sprite(startX, startY, 'guard');
     player.pType = "guard";
     spark = game.add.sprite(-10000, -10000, "heal");
     cherub = "heal";
+    inst = game.add.sprite(200, 200, "inst2");
   }
   else{
     player = game.add.sprite(startX, startY, 'dude')
@@ -127,7 +132,7 @@ function create () {
   // Create some baddies to waste :)
   enemies = [];
 
-  player.bringToTop()
+  player.bringToTop();
 
   game.camera.follow(player)
   game.camera.deadzone = new Phaser.Rectangle(150, 150, 500, 300)
@@ -402,4 +407,8 @@ function test(e){
 
 function start(){
   $("#createModal").modal("hide");
+
+    window.setTimeout({
+      inst.kill();
+    }, 6000);
 }
