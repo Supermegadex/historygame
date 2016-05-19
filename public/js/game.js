@@ -408,7 +408,7 @@ function test(e){
 function start(){
   $("#createModal").modal("hide");
 
-    window.setTimeout({
+    window.setTimeout(function(){
       inst.kill();
     }, 6000);
 }
